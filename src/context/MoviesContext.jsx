@@ -6,7 +6,46 @@ import { createContext } from "react";
 export const MoviesContext = createContext();
 
 export const MoviesContextProvider = ({ children }) => {
+  const [currentNav, setCurrentNav] = useState("New Releases");
   const [movies, setMovies] = useState([]);
+  const [navigations, setNavigations] = useState([
+    {
+      id: 1,
+      name: "New Releases",
+      selected: true,
+    },
+    {
+      id: 2,
+      name: "Trending",
+      selected: false,
+    },
+    {
+      id: 3,
+      name: "Coming Soon",
+      selected: false,
+    },
+    {
+      id: 4,
+      name: "Favourites",
+      selected: false,
+    },
+    {
+      id: 5,
+      name: "Watch Later",
+      selected: false,
+    },
+  ]);
+
+  const menuHandler = (e) => {
+    setCurrentNav(e.target.textContent);
+    setNavigations(
+      navigations.map((nav) => {
+        if (nav.name === e.target.textContent) nav.selected = true;
+        else nav.selected = false;
+        return nav;
+      })
+    );
+  };
 
   const headers = {
     client: "MOVI_159",
@@ -22,7 +61,7 @@ export const MoviesContextProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          "https://api-gate2.movieglu.com/filmsNowShowing/?n=8",
+          "https://api-gate2.movieglu.com/filmsNowShowing/?n=10",
           {
             headers,
           }
@@ -36,7 +75,16 @@ export const MoviesContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <MoviesContext.Provider value={{ movies }}>
+    <MoviesContext.Provider
+      value={{
+        movies,
+        navigations,
+        setNavigations,
+        setMovies,
+        menuHandler,
+        currentNav,
+      }}
+    >
       {children}
     </MoviesContext.Provider>
   );

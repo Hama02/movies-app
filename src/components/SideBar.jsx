@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MdOutlineNetworkCell } from "react-icons/md";
+import { MoviesContext } from "../context/MoviesContext";
 
 const SideBar = () => {
+  const { navigations, menuHandler } = useContext(MoviesContext);
+
   return (
     <div className="sidebar">
       <div className="logo">
@@ -9,21 +12,17 @@ const SideBar = () => {
         <span>MEDIA APP</span>
       </div>
       <div className="nav">
-        <div className="item">
-          <h3>New Releases</h3>
-        </div>
-        <div className="item">
-          <h3>Trending</h3>
-        </div>
-        <div className="item">
-          <h3>Coming Soon</h3>
-        </div>
-        <div className="item">
-          <h3>Favourites</h3>
-        </div>
-        <div className="item">
-          <h3>Watch Later</h3>
-        </div>
+        {navigations?.map((nav) => {
+          return (
+            <div
+              className={nav?.selected ? "item selected" : "item"}
+              key={nav?.id}
+              onClick={menuHandler}
+            >
+              <h3>{nav?.name}</h3>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
