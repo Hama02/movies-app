@@ -78,9 +78,67 @@ $sidebar: #1a1c20;
           justify-content: space-between;
           align-items: center;
           form {
+            position: relative;
             display: flex;
             align-items: center;
             margin-left: 50px;
+            flex-basis: 500px;
+
+            .results {
+              position: absolute;
+              left: 0;
+              top: 66px;
+              z-index: 999;
+              background: white;
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              gap: 5px;
+
+              .item {
+                display: flex;
+                padding: 20px;
+                background-color: #1a1c20;
+                gap: 20px;
+                cursor: pointer;
+                img {
+                  width: 50px;
+                }
+                .info {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-evenly;
+                  h4 {
+                    font-size: 18px;
+                    font-weight: 700;
+                  }
+                  .details {
+                    display: flex;
+                    gap: 5px;
+                    color: white;
+                    align-items: center;
+
+                    h3 {
+                      font-size: 12px;
+                      font-weight: 200;
+                      padding: 0;
+                    }
+                    p {
+                      font-size: 12px;
+                      font-weight: 200;
+                    }
+                  }
+                }
+              }
+              h3 {
+                display: block;
+                padding: 18px;
+                font-size: 18px;
+                margin: 0 auto;
+                font-weight: 700;
+                cursor: pointer;
+              }
+            }
             :first-child {
               font-size: 21px;
               color: white;

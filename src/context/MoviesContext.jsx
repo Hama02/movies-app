@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -6,6 +7,8 @@ import { createContext } from "react";
 export const MoviesContext = createContext();
 
 export const MoviesContextProvider = ({ children }) => {
+  const [search, setSearch] = useState("");
+  const [searchList, setSearchList] = useState([]);
   const [currentNav, setCurrentNav] = useState("New Releases");
   const [movies, setMovies] = useState([]);
   const [navigations, setNavigations] = useState([
@@ -61,18 +64,37 @@ export const MoviesContextProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          "https://api-gate2.movieglu.com/filmsNowShowing/?n=10",
+          `https://api-gate2.movieglu.com/filmLiveSearch/?n=5&query=${search}`,
           {
             headers,
           }
         );
+        setSearchList(res.data.films);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (search === "") setSearchList([]);
+    else fetchData();
+  }, [search]);
+
+  useEffect(() => {
+    let url;
+    if (currentNav === "Coming Soon")
+      url = "https://api-gate2.movieglu.com/filmsComingSoon/?n=10";
+    else url = "https://api-gate2.movieglu.com/filmsNowShowing/?n=10";
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(url, {
+          headers,
+        });
         setMovies(res.data.films);
       } catch (err) {
         console.log(err);
       }
     };
     fetchData();
-  }, []);
+  }, [currentNav]);
 
   return (
     <MoviesContext.Provider
@@ -83,6 +105,8 @@ export const MoviesContextProvider = ({ children }) => {
         setMovies,
         menuHandler,
         currentNav,
+        setSearch,
+        searchList,
       }}
     >
       {children}
