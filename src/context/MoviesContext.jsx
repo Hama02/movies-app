@@ -7,6 +7,7 @@ import { createContext } from "react";
 export const MoviesContext = createContext();
 
 export const MoviesContextProvider = ({ children }) => {
+  const [favourites, setFavourites] = useState([]);
   const [search, setSearch] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [currentNav, setCurrentNav] = useState("New Releases");
@@ -38,6 +39,17 @@ export const MoviesContextProvider = ({ children }) => {
       selected: false,
     },
   ]);
+  const api_key = "a094d080c8ff75f93f7676656c5c6031";
+
+  const favouriteHandler = (id, e) => {
+    e.target.style.color = e.target.style.color === "" ? "#ff4350" : "";
+    const item = movies.filter((mov) => mov.id === id)[0];
+    if (favourites.includes(item)) {
+      setFavourites(favourites.filter((i) => i !== item));
+    } else {
+      setFavourites([...favourites, item]);
+    }
+  };
 
   const menuHandler = (e) => {
     setCurrentNav(e.target.textContent);
@@ -50,26 +62,14 @@ export const MoviesContextProvider = ({ children }) => {
     );
   };
 
-  const headers = {
-    client: "MOVI_159",
-    "x-api-key": "urPd5tamU92qdna7MN6me9sjsyBItXke34zeZ52b",
-    Authorization: "Basic TU9WSV8xNTk6Rmk3WXV0VTVaek9o",
-    territory: "US",
-    "api-version": "v200",
-    geolocation: "40.7579;-73.9878",
-    "device-datetime": "2023-01-20T23:16:48.864Z",
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `https://api-gate2.movieglu.com/filmLiveSearch/?n=5&query=${search}`,
-          {
-            headers,
-          }
+          `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=en-US&query=${search}&page=1&include_adult=false`
         );
-        setSearchList(res.data.films);
+        const data = res.data.results.slice(0, 5);
+        setSearchList(data);
       } catch (err) {
         console.log(err);
       }
@@ -79,16 +79,22 @@ export const MoviesContextProvider = ({ children }) => {
   }, [search]);
 
   useEffect(() => {
-    let url;
-    if (currentNav === "Coming Soon")
-      url = "https://api-gate2.movieglu.com/filmsComingSoon/?n=10";
-    else url = "https://api-gate2.movieglu.com/filmsNowShowing/?n=10";
+    if (currentNav === "Favourites") setMovies(favourites);
+  }, [currentNav, favourites]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(url, {
-          headers,
-        });
-        setMovies(res.data.films);
+        let url;
+        if (currentNav === "Trending")
+          url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${api_key}`;
+        else if (currentNav === "New Releases")
+          url = `https://api.themoviedb.org/3/movie/popular?api_key=${api_key}&language=en-US&page=1`;
+        else if (currentNav === "Coming Soon")
+          url = `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=1`;
+        const res = await axios.get(url);
+        const data = res.data.results.slice(0, 10);
+        setMovies(data);
       } catch (err) {
         console.log(err);
       }
@@ -107,6 +113,7 @@ export const MoviesContextProvider = ({ children }) => {
         currentNav,
         setSearch,
         searchList,
+        favouriteHandler,
       }}
     >
       {children}

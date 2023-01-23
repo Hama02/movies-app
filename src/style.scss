@@ -122,6 +122,7 @@ $sidebar: #1a1c20;
                       font-size: 12px;
                       font-weight: 200;
                       padding: 0;
+                      margin: 0;
                     }
                     p {
                       font-size: 12px;
@@ -208,18 +209,27 @@ $sidebar: #1a1c20;
                 width: 250px;
                 cursor: pointer;
                 position: relative;
+                overflow: hidden;
+                .fav {
+                  position: absolute;
+                  top: 8%;
+                  left: 114%;
+                  transform: translate(-50%, -50%);
+                  font-size: 34px;
+                  z-index: 999;
+                  transition: 0.5s;
+                }
                 img {
                   width: 250px;
                   height: 380px;
                   object-fit: cover;
-                  box-shadow: -10px 8px 28px 3px rgba(0, 0, 0, 0.52);
                 }
                 .overlay {
                   position: absolute;
                   top: 0;
                   left: 0;
                   width: 100%;
-                  height: 100%;
+                  height: 99%;
                   background-color: rgba(0, 0, 0, 0.5);
                   display: flex;
                   align-items: center;
@@ -229,11 +239,14 @@ $sidebar: #1a1c20;
 
                   .icone {
                     color: white;
-                    font-size: 40px;
+                    font-size: 80px;
                   }
                 }
                 &:hover .overlay {
                   opacity: 1;
+                }
+                &:hover .fav {
+                  left: 91%;
                 }
               }
               .info {

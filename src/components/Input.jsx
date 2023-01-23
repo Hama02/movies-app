@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { BsSearch } from "react-icons/bs";
+import { VscDebugBreakpointData } from "react-icons/vsc";
 import { MoviesContext } from "../context/MoviesContext";
 import UserImg from "../img/user.jpg";
 
@@ -20,13 +21,17 @@ const Input = () => {
           <div className="results">
             {searchList.map((item) => {
               return (
-                <div className="item" key={item.film_id}>
-                  <img src={item.images.poster["1"].medium.film_image} alt="" />
+                <div className="item" key={item?.id}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
+                    alt=""
+                  />
                   <div className="info">
-                    <h4>{item.film_name}</h4>
+                    <h4>{item?.original_title}</h4>
                     <div className="details">
-                      <h3>{item.release_dates["0"].release_date}</h3>
-                      <p>Test Category</p>
+                      <h3>{item?.release_date}</h3>
+                      <VscDebugBreakpointData />
+                      <p>{item?.vote_average}</p>
                     </div>
                   </div>
                 </div>
