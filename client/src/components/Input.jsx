@@ -1,13 +1,24 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext } from "react";
 import { BsSearch } from "react-icons/bs";
 import { VscDebugBreakpointData } from "react-icons/vsc";
 import { MoviesContext } from "../context/MoviesContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Input = () => {
+  const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
   const { setSearch, searchList } = useContext(MoviesContext);
+  const { logout } = useContext(AuthContext);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="search">
       <form>
@@ -47,6 +58,9 @@ const Input = () => {
         <div className="user">
           <h3>{currentUser.username}</h3>
           <img src={currentUser.img} alt="" />
+          <button className="logout" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
       ) : (
         <Link to="/login" className="login">

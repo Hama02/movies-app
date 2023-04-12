@@ -33,11 +33,6 @@ export const MoviesContextProvider = ({ children }) => {
       name: "Favourites",
       selected: false,
     },
-    {
-      id: 5,
-      name: "Watch Later",
-      selected: false,
-    },
   ]);
   const api_key = "a094d080c8ff75f93f7676656c5c6031";
 

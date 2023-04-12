@@ -163,7 +163,7 @@ $sidebar: #1a1c20;
 
             h3 {
               background-color: #ff4350;
-              font-size: 18px;
+              font-size: 15px;
               font-weight: 700;
               letter-spacing: 1.2px;
             }
@@ -175,6 +175,25 @@ $sidebar: #1a1c20;
               object-fit: cover;
               top: 26px;
               right: -8px;
+            }
+            .logout {
+              outline: none;
+              border: none;
+              color: white;
+              position: absolute;
+              bottom: -89px;
+              left: 24px;
+              font-size: 18px;
+              background: #ff4350;
+              padding: 10px;
+              cursor: pointer;
+              visibility: hidden;
+              transition: 0.6s;
+            }
+
+            &:hover .logout {
+              visibility: visible;
+              bottom: -109px;
             }
           }
           .login {
